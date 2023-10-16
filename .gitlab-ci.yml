@@ -1,0 +1,47 @@
+stages:
+  - code_style
+  - build
+  - test
+  - deploy
+
+code_style_job:
+  stage: code_style
+  script:
+  - clang-format -i -style=google src/**/*.c src/**/*.h
+  - git diff --exit-code
+  after_script:
+  - bash src/telegram.sh CI
+
+build-job:
+  stage: build
+  script:
+  - cd src/cat/
+  - make s21_cat
+  - cd ../grep/
+  - make s21_grep
+  artifacts:
+    paths:
+      - src/cat/
+      - src/grep/
+    expire_in: 30 days
+  after_script:
+  - bash src/telegram.sh CI
+
+build_test:
+  stage: test
+  script:
+  - cd src/cat/
+  - make sh
+  - cd ../grep/
+  - make sh
+  after_script:
+  - bash src/telegram.sh CI
+
+deploy-job:
+  stage: deploy
+  script:
+    - src/deploy.sh
+    - bash src/deploy.sh
+  after_script:
+    - bash src/telegram.sh CD
+  when: manual

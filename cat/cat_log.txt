@@ -1,0 +1,11 @@
+
+-b cat_file_test.txt
+cat_file_test.txt
+cat_file_test.txt-s cat_file_test.txt
+-t cat_file_test.txt
+-v cat_file_test.txt
+cat_file_test.txt
+-T cat_file_test.txt
+--number-nonblank cat_file_test.txt
+--number cat_file_test.txt
+--squeeze-blank cat_file_test.txt
